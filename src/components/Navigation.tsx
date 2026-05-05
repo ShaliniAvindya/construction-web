@@ -81,13 +81,6 @@ export default function Navigation() {
             >
               Client Login
             </Link>
-              <Link
-                to="/login"
-                className="hidden sm:inline-flex text-xs uppercase tracking-[0.12em] text-[#C9A87C] border border-[#3F3F46] px-6 py-2.5 hover:bg-[#C9A87C] hover:text-[#080808] hover:border-[#C9A87C] transition-all duration-300"
-              >
-                Client Login
-              </Link>
-            )}
 
             {/* Mobile menu button */}
             <button
