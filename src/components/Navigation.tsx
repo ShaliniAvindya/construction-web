@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router";
-import { FiSearch, FiMenu, FiX, FiUser } from "react-icons/fi";
-import { useAuth } from "@/hooks/useAuth";
+import { FiSearch, FiMenu, FiX } from "react-icons/fi";
 import SearchOverlay from "./SearchOverlay";
 
 const navLinks = [
@@ -18,7 +17,6 @@ export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
-  const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,25 +75,12 @@ export default function Navigation() {
               <FiSearch size={20} />
             </button>
 
-            {user ? (
-              <div className="relative group">
-                <button className="w-9 h-9 rounded-full bg-[#C9A87C] flex items-center justify-center text-[#080808] font-semibold text-sm">
-                  {user.name?.charAt(0).toUpperCase() || <FiUser size={16} />}
-                </button>
-                <div className="absolute right-0 top-full mt-2 w-48 bg-[#18181B] border border-[#3F3F46] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <div className="px-4 py-3 border-b border-[#3F3F46]">
-                    <p className="text-sm text-white font-medium">{user.name}</p>
-                    <p className="text-xs text-[#A1A1AA]">{user.email}</p>
-                  </div>
-                  <button
-                    onClick={logout}
-                    className="w-full text-left px-4 py-2 text-sm text-[#A1A1AA] hover:text-[#C9A87C] hover:bg-[#080808] transition-colors"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            ) : (
+            <Link
+              to="/login"
+              className="hidden sm:inline-flex text-xs uppercase tracking-[0.12em] text-[#C9A87C] border border-[#3F3F46] px-6 py-2.5 hover:bg-[#C9A87C] hover:text-[#080808] hover:border-[#C9A87C] transition-all duration-300"
+            >
+              Client Login
+            </Link>
               <Link
                 to="/login"
                 className="hidden sm:inline-flex text-xs uppercase tracking-[0.12em] text-[#C9A87C] border border-[#3F3F46] px-6 py-2.5 hover:bg-[#C9A87C] hover:text-[#080808] hover:border-[#C9A87C] transition-all duration-300"
@@ -129,14 +114,12 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
-          {!user && (
-            <Link
-              to="/login"
-              className="mt-4 text-sm uppercase tracking-[0.12em] text-[#C9A87C] border border-[#C9A87C] px-8 py-3"
-            >
-              Client Login
-            </Link>
-          )}
+          <Link
+            to="/login"
+            className="mt-4 text-sm uppercase tracking-[0.12em] text-[#C9A87C] border border-[#C9A87C] px-8 py-3"
+          >
+            Client Login
+          </Link>
         </div>
       )}
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { trpc } from "@/providers/trpc";
+import { blogPosts } from "@/data";
 
 const categories = [
   { label: "All", value: undefined },
@@ -53,12 +53,7 @@ const fallbackPosts = [
 export default function Blog() {
   const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined);
 
-  const { data: apiPosts } = trpc.blog.list.useQuery({
-    category: activeCategory as any,
-    limit: 20,
-  });
-
-  const posts = apiPosts?.length ? apiPosts : fallbackPosts;
+  const posts = blogPosts;
 
   const filtered = activeCategory
     ? posts.filter((p) => p.category === activeCategory)

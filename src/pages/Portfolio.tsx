@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { FiSearch, FiArrowRight } from "react-icons/fi";
-import { trpc } from "@/providers/trpc";
+import { projects } from "@/data";
 
 const categories = [
   { label: "All", value: undefined },
@@ -12,72 +12,22 @@ const categories = [
   { label: "Exterior", value: "exterior" },
 ] as const;
 
-const fallbackProjects = [
-  {
-    id: 1,
-    slug: "horizon-residence",
-    name: "The Horizon Residence",
-    location: "Malibu, California",
-    category: "residential",
-    featuredImage: "/images/project-horizon.jpg",
-  },
-  {
-    id: 2,
-    slug: "meridian-tower",
-    name: "Meridian Corporate Tower",
-    location: "Dubai, UAE",
-    category: "commercial",
-    featuredImage: "/images/project-meridian.jpg",
-  },
-  {
-    id: 3,
-    slug: "villa-serenata",
-    name: "Villa Serenata",
-    location: "Tuscany, Italy",
-    category: "residential",
-    featuredImage: "/images/project-serenata.jpg",
-  },
-  {
-    id: 4,
-    slug: "green-sanctuary",
-    name: "The Green Sanctuary",
-    location: "Singapore",
-    category: "landscape",
-    featuredImage: "/images/project-sanctuary.jpg",
-  },
-  {
-    id: 5,
-    slug: "urban-loft-collection",
-    name: "Urban Loft Collection",
-    location: "New York, NY",
-    category: "interior",
-    featuredImage: "/images/service-interior.jpg",
-  },
-  {
-    id: 6,
-    slug: "coastal-pavilion",
-    name: "Coastal Pavilion",
-    location: "Miami, Florida",
-    category: "exterior",
-    featuredImage: "/images/service-exterior.jpg",
-  },
-];
-
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data: apiProjects } = trpc.project.list.useQuery({
-    category: activeCategory as any,
-    search: searchQuery || undefined,
-    limit: 20,
-  });
-
-  const projects = apiProjects?.length ? apiProjects : fallbackProjects;
-
-  const filtered = activeCategory
-    ? projects.filter((p) => p.category === activeCategory)
-    : projects;
+  const filtered = projects
+    .filter((project) =>
+      activeCategory ? project.category === activeCategory : true
+    )
+    .filter((project) =>
+      searchQuery
+        ? [project.name, project.location, project.category]
+            .join(" ")
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        : true
+    );
 
   return (
     <main>

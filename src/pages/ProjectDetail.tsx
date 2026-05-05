@@ -1,21 +1,10 @@
 import { useParams, Link } from "react-router";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { trpc } from "@/providers/trpc";
+import { getProjectBySlug } from "@/data";
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: project, isLoading } = trpc.project.getBySlug.useQuery(
-    { slug: slug || "" },
-    { enabled: !!slug }
-  );
-
-  if (isLoading) {
-    return (
-      <main className="bg-[#080808] min-h-screen flex items-center justify-center">
-        <p className="text-[#A1A1AA]">Loading...</p>
-      </main>
-    );
-  }
+  const project = getProjectBySlug(slug || "");
 
   if (!project) {
     return (
@@ -35,9 +24,7 @@ export default function ProjectDetail() {
     );
   }
 
-  const images = Array.isArray(project.images)
-    ? project.images
-    : JSON.parse((project.images as string) || "[]");
+  const images = Array.isArray(project.images) ? project.images : project.images ? [project.images] : [];
 
   return (
     <main>

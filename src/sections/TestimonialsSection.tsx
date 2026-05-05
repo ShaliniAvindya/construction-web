@@ -1,50 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { trpc } from "@/providers/trpc";
-
-const fallbackTestimonials = [
-  {
-    id: 1,
-    quote:
-      "Apex Construct transformed our vision into a home that exceeds every expectation. Their attention to detail is unparalleled.",
-    authorName: "Alexandra Chen",
-    authorTitle: "CEO",
-    authorCompany: "Horizon Ventures",
-  },
-  {
-    id: 2,
-    quote:
-      "The level of craftsmanship and professionalism throughout our commercial build was extraordinary. A true partner in every sense.",
-    authorName: "Marcus Whitfield",
-    authorTitle: "Director",
-    authorCompany: "Meridian Group",
-  },
-  {
-    id: 3,
-    quote:
-      "From the initial consultation to the final walkthrough, every interaction was marked by expertise and genuine care.",
-    authorName: "Isabella Romano",
-    authorTitle: "Private Client",
-    authorCompany: "Tuscany",
-  },
-];
+import { testimonials } from "@/data";
 
 export default function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
-  const { data: apiTestimonials } = trpc.testimonial.list.useQuery();
-  const testimonials = apiTestimonials?.length
-    ? apiTestimonials
-    : fallbackTestimonials;
+  const testimonialsData = testimonials;
 
   const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % testimonials.length);
-  }, [testimonials.length]);
+    setCurrent((prev) => (prev + 1) % testimonialsData.length);
+  }, [testimonialsData.length]);
 
   const prev = useCallback(() => {
     setCurrent(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      (prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length
     );
-  }, [testimonials.length]);
+  }, [testimonialsData.length]);
 
   useEffect(() => {
     const interval = setInterval(next, 6000);
@@ -64,7 +34,7 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="max-w-3xl mx-auto relative">
-          {testimonials.map((t, i) => (
+          {testimonialsData.map((t, i) => (
             <div
               key={t.id}
               className={`text-center transition-all duration-600 ${

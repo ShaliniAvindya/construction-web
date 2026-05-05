@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router";
 import { FiArrowLeft } from "react-icons/fi";
-import { trpc } from "@/providers/trpc";
+import { getBlogPostBySlug } from "@/data";
 
 const fallbackPosts: Record<string, {
   title: string;
@@ -82,20 +82,7 @@ Sound design is becoming as important as visual design. Strategic acoustic treat
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: apiPost, isLoading } = trpc.blog.getBySlug.useQuery(
-    { slug: slug || "" },
-    { enabled: !!slug }
-  );
-
-  const post = apiPost || (slug ? fallbackPosts[slug] : null);
-
-  if (isLoading) {
-    return (
-      <main className="bg-[#080808] min-h-screen flex items-center justify-center">
-        <p className="text-[#A1A1AA]">Loading...</p>
-      </main>
-    );
-  }
+  const post = getBlogPostBySlug(slug || "") || (slug ? fallbackPosts[slug] : null);
 
   if (!post) {
     return (

@@ -1,47 +1,11 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { FiArrowRight } from "react-icons/fi";
-import { trpc } from "@/providers/trpc";
-
-const fallbackProjects = [
-  {
-    id: 1,
-    slug: "horizon-residence",
-    name: "The Horizon Residence",
-    location: "Malibu, California",
-    category: "residential",
-    featuredImage: "/images/project-horizon.jpg",
-  },
-  {
-    id: 2,
-    slug: "meridian-tower",
-    name: "Meridian Corporate Tower",
-    location: "Dubai, UAE",
-    category: "commercial",
-    featuredImage: "/images/project-meridian.jpg",
-  },
-  {
-    id: 3,
-    slug: "villa-serenata",
-    name: "Villa Serenata",
-    location: "Tuscany, Italy",
-    category: "residential",
-    featuredImage: "/images/project-serenata.jpg",
-  },
-  {
-    id: 4,
-    slug: "green-sanctuary",
-    name: "The Green Sanctuary",
-    location: "Singapore",
-    category: "landscape",
-    featuredImage: "/images/project-sanctuary.jpg",
-  },
-];
+import { featuredProjects } from "@/data";
 
 export default function FeaturedProjects() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { data: apiProjects } = trpc.project.list.useQuery({ limit: 4 });
-  const projects = apiProjects?.length ? apiProjects : fallbackProjects;
+  const projects = featuredProjects;
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -1,17 +1,11 @@
 import { Link } from "react-router";
 import { FiInstagram, FiLinkedin, FiTwitter } from "react-icons/fi";
 import { useState } from "react";
-import { trpc } from "@/providers/trpc";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const subscribe = trpc.newsletter.subscribe.useMutation({
-    onSuccess: () => {
-      setSubscribed(true);
-      setEmail("");
-    },
-  });
+  const [submitting, setSubmitting] = useState(false);
 
   return (
     <footer className="bg-[#080808] border-t border-[#3F3F46]/30 pt-20 pb-10">
@@ -120,7 +114,13 @@ export default function Footer() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  if (email) subscribe.mutate({ email });
+                  if (!email) return;
+                  setSubmitting(true);
+                  setTimeout(() => {
+                    setSubscribed(true);
+                    setEmail("");
+                    setSubmitting(false);
+                  }, 400);
                 }}
                 className="flex flex-col gap-3"
               >
@@ -133,10 +133,10 @@ export default function Footer() {
                 />
                 <button
                   type="submit"
-                  disabled={subscribe.isPending}
+                  disabled={submitting}
                   className="bg-[#C9A87C] text-[#080808] text-sm uppercase tracking-[0.12em] px-4 py-3 hover:bg-white transition-colors disabled:opacity-50"
                 >
-                  {subscribe.isPending ? "..." : "Subscribe"}
+                  {submitting ? "..." : "Subscribe"}
                 </button>
               </form>
             )}

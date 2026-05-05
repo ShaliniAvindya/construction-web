@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { FiMapPin, FiPhone, FiMail, FiClock } from "react-icons/fi";
-import { trpc } from "@/providers/trpc";
 
 const projectTypes = [
   { value: "interior", label: "Interior Design" },
@@ -22,13 +21,7 @@ export default function Contact() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
-
-  const submit = trpc.contact.submit.useMutation({
-    onSuccess: () => {
-      setSubmitted(true);
-      setForm({ name: "", email: "", phone: "", projectType: "other", message: "" });
-    },
-  });
+  const [submitting, setSubmitting] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -41,10 +34,15 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validate()) {
-      submit.mutate(form as any);
+      setSubmitting(true);
+      setTimeout(() => {
+        setSubmitted(true);
+        setForm({ name: "", email: "", phone: "", projectType: "other", message: "" });
+        setSubmitting(false);
+      }, 600);
     }
   };
 
@@ -175,10 +173,10 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    disabled={submit.isPending}
+                    disabled={submitting}
                     className="w-full bg-[#C9A87C] text-[#080808] py-4 text-sm uppercase tracking-[0.12em] font-medium hover:bg-white transition-colors disabled:opacity-50"
                   >
-                    {submit.isPending ? "Sending..." : "Send Message"}
+                    {submitting ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               )}
