@@ -25,13 +25,6 @@ export default function Login() {
           <CardTitle>Client Login</CardTitle>
         </CardHeader>
         <CardContent>
-<<<<<<< HEAD
-          <p className="mb-6 text-sm text-[#A1A1AA]">
-            This version is a UI-only demo. Authentication is not connected to a backend.
-          </p>
-          <Button className="w-full" size="lg" disabled>
-            Login unavailable
-=======
           <Button
             className="w-full"
             size="lg"
@@ -40,7 +33,6 @@ export default function Login() {
             }}
           >
             Sign in
->>>>>>> f3bac888a34aac6d76b24fa930afa5da6bf7923d
           </Button>
           <div className="mt-6 text-center text-sm text-[#A1A1AA]">
             Want to get in touch? <Link to="/contact" className="text-[#C9A87C] hover:text-white">
